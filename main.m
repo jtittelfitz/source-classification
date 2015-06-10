@@ -25,8 +25,8 @@ machine_learning = true;
 if machine_learning
     train = true;
     learn_on_mask = true;
-    training_examples = 20;
-    test_examples = 5;
+    training_examples = 1;
+    test_examples = 1;
     mld = cell(2,1);
     mld{1} = zeros(1);      % training data
     mld{2} = zeros(1);      % test data
@@ -50,6 +50,7 @@ solution = -10*zeros(Nx);
 solution_t = zeros(num_sources,1);
 
 % initialize sound speed 
+if ~train; exact_speed = 2; interpolate = true; end
 medium.sound_speed = speeds(kgrid,exact_speed);
 medium.density = ones(Nx);
 
@@ -118,8 +119,9 @@ t_end = 4;
 Nt = size(kgrid.t_array,2);
 
 % interpolate boundary data to new time grid
-if interpolate 
-    t_j_grid = floor(t_j / dt) + 1;
+if interpolate
+    t_j_grid
+    t_j_grid = floor(t_j / dt) + 1
     [xq,tq] = ndgrid(1:size(Lambda,1),1:length(kgrid.t_array));
     Lambda = interpn(x,t,Lambda,xq,tq); 
     clear x, clear t, clear xq, clear tq;
@@ -317,6 +319,8 @@ end %end of single test
 approx_speed_train = mld{1};
 approx_speed_test = mld{2};
 save('approx_speed_training_data.mat','approx_speed_train','approx_speed_test');
+
+generic_classifier
 
 %end
 %end
